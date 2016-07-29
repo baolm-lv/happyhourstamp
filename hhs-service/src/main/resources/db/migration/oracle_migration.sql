@@ -1,0 +1,76 @@
+ALTER TABLE LVMAMA_VER.ord_order 
+ADD ORDER_SUBTYPE VARCHAR(100) DEFAULT NULL;
+COMMENT ON COLUMN LVMAMA_VER.ord_order.ORDER_SUBTYPE IS '订单子类型';
+
+ALTER TABLE LVMAMA_VER.ord_order_item 
+ADD ORDER_SUBTYPE VARCHAR(100) DEFAULT NULL;
+COMMENT ON COLUMN LVMAMA_VER.ord_order_item.ORDER_SUBTYPE IS '订单子类型';
+
+CREATE TABLE LVMAMA_VER.ord_stamp_order (
+  ORDER_ID number(11) NOT NULL PRIMARY KEY,
+  USER_ID varchar(100) NOT NULL,
+  USER_NO varchar(100) NOT NULL,
+  PAY_TYPE varchar(20) NOT NULL,
+  DOWN_PAYMENT number(11) DEFAULT NULL,
+  DOWN_DATE  DATE DEFAULT NULL,
+  BALANCE_DUE_WAIT_DATE date DEFAULT NULL,
+  CREATE_DATE date   NOT NULL,
+  UPDATE_DATE date NOT NULL,
+  STAMP_ORDER_CLASSIFICATION varchar(32) DEFAULT NULL,
+  REMIND_CUSTOMER_DATE date DEFAULT NULL
+);
+COMMENT ON TABLE LVMAMA_VER.ord_stamp_order IS '券订单';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.ORDER_ID IS '订单ID';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.USER_ID IS '用户ID';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.USER_NO IS '用户NO';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.CREATE_DATE IS '创建日期';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.UPDATE_DATE IS '更新日期';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.STAMP_ORDER_CLASSIFICATION IS '劵订单分类:劵本身订单|劵兑换商品订单';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.PAY_TYPE IS '支付方式   定金PART 尾款LAST 全额FULL';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.DOWN_PAYMENT IS '首付金额';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.DOWN_DATE IS '首付时间';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.BALANCE_DUE_WAIT_DATE IS '尾款等待时间';
+
+CREATE TABLE LVMAMA_VER.ord_stamp_order_item (
+  ORDER_ITEM_ID number(11) NOT NULL PRIMARY KEY,
+  ORDER_ID number(11) NOT NULL,
+  STAMP_DEFINITION_ID varchar(100) NOT NULL,
+  STAMP_NAME varchar(128) DEFAULT NULL,
+  QUANTITY number(11) DEFAULT NULL,
+  USER_ID varchar(100) NOT NULL,
+  USER_NO varchar(100) NOT NULL,
+  CREATE_DATE date NOT NULL,
+  UPDATE_DATE date NOT NULL
+);
+
+COMMENT ON TABLE LVMAMA_VER.ord_stamp_order_item IS '券子订单';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order_item.ORDER_ITEM_ID IS '订单Item ID';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order_item.USER_ID IS '用户ID';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order_item.USER_NO IS '用户NO';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order_item.CREATE_DATE IS '创建日期';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order_item.UPDATE_DATE IS '更新日期';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order_item.STAMP_DEFINITION_ID IS '劵ID';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order_item.STAMP_NAME IS '劵名称';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order_item.QUANTITY IS '数量';
+
+
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.PAY_TYPE IS '支付方式';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.DOWN_PAYMENT IS '支付金额';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.DOWN_DATE IS '支付日期';
+COMMENT ON COLUMN LVMAMA_VER.ord_stamp_order.BALANCE_DUE_WAIT_DATE IS '等待支付日期';
+
+
+insert into LVMAMA_VER.biz_category (CATEGORY_ID, PARENT_ID, CATEGORY_CODE, CATEGORY_NAME, CATEGORY_DESC, CANCEL_FLAG, SEQ, PROCESS_KEY, PROM_TARGET)
+values (99, null, 'category_presale', '预售', '', 'Y', null, 'presale', '');
+
+
+insert into LVMAMA_VER.ORD_FUNCTION(ORD_FUNCTION_ID,FUNCTION_CODE,FUNCTION_NAME) values (101,'REMINDER_LASH_PAY','催尾款支付');
+insert into LVMAMA_VER.ORD_FUNCTION(ORD_FUNCTION_ID,FUNCTION_CODE,FUNCTION_NAME) values (102,'REMINDER_EXCHANGE_STAMP','催兑换提醒时间');
+
+-- 短信模板:预售券订单-支付完成
+insert into LVMAMA_VER.ORD_SMS_TEMPLATE(TEMPLATE_ID,TEMPLATE_NAME,CONTENT,CATEGORY_ID,DISTRIBUTOR_ID,SUPLIER_ID,SEND_NODE,ORDER_TIME,CREATA_TIME,VALID)
+values(seq_ord_sms_template_id.nextval,'支付-支付完成-预付-预售券','您的订单号${orderId}已支付成功，您预订的是${productInfo}。券码分别为${stampCodes}。客服电话：${customerServicePhone}(免长话费)。${clientSign}',0,0,null,'STAMP_PAID','ALL',sysdate,'Y');
+-- 短信模板:预售券订单-定金支付完成
+insert into LVMAMA_VER.ORD_SMS_TEMPLATE(TEMPLATE_ID,TEMPLATE_NAME,CONTENT,CATEGORY_ID,DISTRIBUTOR_ID,SUPLIER_ID,SEND_NODE,ORDER_TIME,CREATA_TIME,VALID)
+values(seq_ord_sms_template_id.nextval,'支付-定金支付完成-预付-预售券','您的订单号${orderId}已部分支付，您预订的是${productInfo}。券码分别为${stampCodes}。将为您保留至${latestPaymentTime}，请尽快完成尾款支付才可正常使用券码。客服电话：${customerServicePhone}(免长话费)。${clientSign}',0,0,null,'STAMP_DEPOSIT_PAID','ALL',sysdate,'Y');
+

@@ -1,0 +1,145 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.lvmama.vst</groupId>
+	<artifactId>vst_happyhourstamp</artifactId>
+	<version>1.0.1</version>
+	<packaging>pom</packaging>
+
+	<name>happyhourstamp</name>
+	<url>http://maven.apache.org</url>
+
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>1.3.3.RELEASE</version>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.7</maven.compiler.source>
+		<maven.compiler.target>1.7</maven.compiler.target>
+		<springfox.swagger.version>2.0.2</springfox.swagger.version>
+		<swagger.annotations>1.5.0</swagger.annotations>
+		<jackson.version>2.4.4</jackson.version>
+		<spring-security-oauth2.version>2.0.3.RELEASE</spring-security-oauth2.version>
+		<openjpa.version>2.3.0</openjpa.version>
+		<testng.version>6.8</testng.version>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.lvmama.vst</groupId>
+				<artifactId>vst_hhs_model</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.lvmama.vst</groupId>
+				<artifactId>vst_hhs_common</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>${jackson.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<modules>
+		<module>hhs-model</module>
+		<module>hhs-service</module>
+		<module>hhs-common</module>
+	</modules>
+
+	<dependencies>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${springfox.swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${springfox.swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-annotations</artifactId>
+			<version>${swagger.annotations}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<!-- <version>${jackson.version}</version> -->
+		</dependency>
+		<!-- test -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testng</groupId>
+			<artifactId>testng</artifactId>
+			<version>${testng.version}</version>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<!-- <version>${maven-compiler-plugin.version}</version> -->
+				<configuration>
+					<source>${maven.compiler.source}</source>
+					<target>${maven.compiler.target}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+	
+	<repositories>
+        <!-- Repositories are searched in order. Prefer maven central to 
+            artifactory because it is much faster. Use Artifactory for GE specific or 
+            customized artifacts only. 
+        <repository>
+            <id>central</id>
+            <name>Maven Repository Switchboard</name>
+            <url>http://repo1.maven.org/maven2</url>
+        </repository>-->
+ 
+        <repository>
+            <id>artifactory.repo</id>
+            <url>http://10.200.1.206:8081/artifactory/PLATFORM-CORE-SNAPSHOT</url>
+            <snapshots>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+	
+	
+	<distributionManagement>
+		<repository>
+			<id>artifactory.releases</id>
+			<name>artifactory.releases</name>
+			<url>http://10.200.1.206:8081/artifactory/PLATFORM-CORE</url>
+		</repository>
+		<snapshotRepository>
+			<id>artifactory.snapshots</id>
+			<name>artifactory.snapshots</name>
+			<url>http://10.200.1.206:8081/artifactory/PLATFORM-CORE-SNAPSHOT</url>
+		</snapshotRepository>
+	</distributionManagement>
+	
+</project>

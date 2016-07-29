@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: hhs-service
+    
+info:
+  app:
+    name: hhs
+    version: v1
+    description: 预售微服务系统

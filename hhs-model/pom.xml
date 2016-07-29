@@ -1,0 +1,43 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<artifactId>vst_hhs_model</artifactId>
+	<packaging>jar</packaging>
+	<name>hhs-model</name>
+	<url>http://maven.apache.org</url>
+
+	<parent>
+		<groupId>com.lvmama.vst</groupId>
+		<artifactId>vst_happyhourstamp</artifactId> 
+		<version>1.0.1</version>
+		<relativePath>../</relativePath>
+	</parent> 
+
+	<dependencies>
+		<dependency>
+			<groupId>com.lvmama.vst</groupId>
+			<artifactId>vst_hhs_common</artifactId>
+		</dependency>
+	</dependencies>
+	
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>Maven Repository Switchboard</name>
+			<url>http://192.168.0.101:8081/nexus/content/groups/public</url>
+		</repository>
+		<repository>
+			<id>artifactory.repo-SNAPSHOT</id>
+			<url>http://10.200.1.206:8081/artifactory/PLATFORM-CORE-SNAPSHOT</url>
+			<releases><enabled>true</enabled></releases>
+          	<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+		<repository>
+			<id>artifactory.repo-RELEASE</id>
+			<url>http://10.200.1.206:8081/artifactory/PLATFORM-CORE</url>
+			<releases><enabled>true</enabled></releases>
+          	<snapshots><enabled>true</enabled></snapshots>
+		</repository>
+	</repositories>
+
+</project>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE xml>
+<configuration>
+
+	<conversionRule conversionWord="transaction" converterClass="com.lvmama.vst.hhs.common.logback.TransactionConverter" />
+
+    <appender name="hhsAppender" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%date{YYYY-MM-dd HH:mm:ss} %level [%thread] %transaction %logger [%file:%line] %msg%n</pattern>
+        </encoder>
+    </appender>
+    
+    
+
+    <logger name="java" level="DEBUG" />
+    
+    <logger name="openjpa.Query"  level="DEBUG"/>
+    
+    <logger name="openjpa.jdbc.SQL" level="DEBUG"/>
+
+    <logger name="org.springframework.security" level="INFO" />
+
+
+    <!-- Quiet down verbose loggers. These log verbose at INFO level -->
+    <logger
+        name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"
+        level="ERROR" />
+    <logger
+        name="org.springframework.boot.actuate.endpoint.mvc.EndpointHandlerMapping"
+        level="ERROR" />
+    <logger
+        name="org.springframework.boot.actuate.endpoint.mvc.FilterRegistrationBean"
+        level="ERROR" />
+    <logger
+        name="org.springframework.security.config.http.FilterInvocationSecurityMetadataSourceParser"
+        level="ERROR" />
+    <logger name="springfox.documentation" level="ERROR" />
+
+    <logger name="com.lvmama.vst.hhs" level="DEBUG" additivity="false">
+        <appender-ref ref="hhsAppender" />
+    </logger>
+
+    <root level="INFO">
+        <appender-ref ref="hhsAppender" />
+    </root>
+
+
+</configuration>
