@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE xml>
-<suite name="unit-tests">
-    <test name="unit-test">
-        <packages>
-            <package name="com.lvmama.vst.*" />
-        </packages>
-    </test>
-</suite>
